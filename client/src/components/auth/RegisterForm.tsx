@@ -10,6 +10,8 @@ import { register as registerApi } from '../../api/auth';
 const registerSchema = z.object({
     name: z.string().min(2, 'Name must be at least 2 characters'),
     email: z.string().email('Enter a valid email'),
+    phone: z.string().min(10, 'Phone must be at least 10 characters'),
+    address: z.string().min(5, 'Address must be at least 5 characters'),
     password: z.string().min(6, 'Password must be at least 6 characters'),
     confirmPassword: z.string(),
 }).refine((data) => data.password === data.confirmPassword, {
@@ -116,6 +118,26 @@ export const RegisterForm = () => {
                                     className="w-full border-0 border-b-2 border-[#DAD5C8] bg-transparent px-0.5 py-2.5 text-[15px] text-[#16211C] placeholder:text-[#A8A296] focus:border-[#1F5D4E] outline-none transition-colors"
                                 />
                                 {errors.email && <p className="text-[#C24A3D] text-xs mt-1.5">{errors.email.message as string}</p>}
+                            </div>
+
+                            <div>
+                                <label className="sc-mono block text-[11px] tracking-wide uppercase text-[#6E7B73] mb-1.5">Phone</label>
+                                <input
+                                    {...register('phone')}
+                                    placeholder="0901234567"
+                                    className="w-full border-0 border-b-2 border-[#DAD5C8] bg-transparent px-0.5 py-2.5 text-[15px] text-[#16211C] placeholder:text-[#A8A296] focus:border-[#1F5D4E] outline-none transition-colors"
+                                />
+                                {errors.phone && <p className="text-[#C24A3D] text-xs mt-1.5">{errors.phone.message as string}</p>}
+                            </div>
+
+                            <div>
+                                <label className="sc-mono block text-[11px] tracking-wide uppercase text-[#6E7B73] mb-1.5">Address</label>
+                                <input
+                                    {...register('address')}
+                                    placeholder="123 Street, City"
+                                    className="w-full border-0 border-b-2 border-[#DAD5C8] bg-transparent px-0.5 py-2.5 text-[15px] text-[#16211C] placeholder:text-[#A8A296] focus:border-[#1F5D4E] outline-none transition-colors"
+                                />
+                                {errors.address && <p className="text-[#C24A3D] text-xs mt-1.5">{errors.address.message as string}</p>}
                             </div>
 
                             <div>

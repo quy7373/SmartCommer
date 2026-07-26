@@ -17,72 +17,140 @@ enum Provider {
   LOCAL
   GOOGLE
   FACEBOOK
+  GITHUB
 }
 
 model User {
-  id            String    @id @default(uuid())
-  email         String    @unique
-  password      String?
-  role          Role      @default(USER)
-  avatar        String?
-  id             String          @id @default(cuid())
-  ownerId        String          @unique
-  name           String
-  slug           String          @unique
-  logo           String?
-  banner         String?
-  description    String?
-  phone          String?
-  email          String?
-  address        String?
-  latitude       Float?
-  longitude      Float?
-  status         StoreStatus     @default(PENDING)
-  rating         Float           @default(0)
-  totalSold      Int             @default(0)
-  paymentSetting PaymentSetting?
-  products       Product[]
-  owner          User            @relation(fields: [ownerId], references: [id])
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
+  id           String    @id @default(uuid())
+  email        String    @unique
+  googleId     String?   @unique
+  facebookId   String?   @unique
+  password     String?
+  name         String
+  phone        String?
+  role         Role      @default(USER)
+  avatar       String?
+  provider     Provider  @default(LOCAL)
+  isVerified   Boolean   @default(false)
+  isBlocked    Boolean   @default(false)
+  lastLoginAt  DateTime?
+  refreshToken String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  // relations (back-references needed by other models below)
+  store              Store?
+  addresses          Address[]
+  cart               Cart?
+  wishlists          Wishlist[]
+  orders             Order[]
+  complaints         Complaint[]
+  ownerConversations Conversation[]      @relation("OwnerConversation")
+  userConversations  Conversation[]      @relation("UserConversation")
+  messages           Message[]           @relation("UserMessages")
+  notifications      Notification[]
+  reviews            Review[]
+  commissionSettings CommissionSetting[] @relation("CommissionUpdatedBy")
+  couponsCreated     Coupon[]            @relation("CouponCreatedBy")
+  inventoryLogs      InventoryLog[]      @relation("InventoryLogCreatedBy")
+  auditLogs          AuditLog[]
+  sessions           Session[]
+  followedStores     StoreFollower[]
+  searchHistories    SearchHistory[]
+  recentlyViewed     RecentlyViewed[]
+}
+
+model Store {
+  id              String          @id @default(cuid())
+  ownerId         String          @unique
+  name            String
+  slug            String          @unique
+  logo            String?
+  banner          String?
+  coverImage      String?
+  description     String?
+  phone           String?
+  email           String?
+  address         String?
+  latitude        Float?
+  longitude       Float?
+  taxCode         String?
+  businessLicense String?
+  openingHours    String?
+  isVerified      Boolean         @default(false)
+  status          StoreStatus     @default(PENDING)
+  rating          Float           @default(0)
+  totalSold       Int             @default(0)
+  paymentSetting  PaymentSetting?
+  products        Product[]
+  categories      Category[]
+  coupons         Coupon[]
+  analyticsDaily  AnalyticsDaily[]
+  analyticsMonthly AnalyticsMonthly[]
+  followers       StoreFollower[]
+  visitors        Visitor[]
+  owner           User               @relation(fields: [ownerId], references: [id])
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  @@index([ownerId])
 }
 
 model Category {
   id       String     @id @default(cuid())
+  storeId  String
+  store    Store      @relation(fields: [storeId], references: [id])
   name     String
-  slug     String     @unique
+  slug     String
   parentId String?
   parent   Category?  @relation("CategoryTree", fields: [parentId], references: [id])
   children Category[] @relation("CategoryTree")
   products Product[]
-  ownerId  String
-  owner    User       @relation(fields: [ownerId], references: [id])
+
+  @@unique([storeId, slug])
+  @@unique([storeId, name])
+  @@index([storeId])
 }
 
 model Product {
-  id          String         @id @default(cuid())
-  storeId     String
-  categoryId  String
-  name        String
-  slug        String         @unique
-  description String
-  basePrice   Decimal?
-  discount    Decimal?
-  thumbnail   String
-  brand       String?
-  sku         String?
-  status      ProductStatus
-  sold        Int            @default(0)
-  viewCount   Int            @default(0)
-  rating      Float          @default(0)
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-  category    Category       @relation(fields: [categoryId], references: [id])
-  store       Store          @relation(fields: [storeId], references: [id])
-  colors      ProductColor[] @relation("ProductColor")
-  images      ProductImage[] @relation("ProductImage")
-  reviews     Review[]
-  wishlists   Wishlist[]
+  id              String              @id @default(cuid())
+  storeId         String
+  categoryId      String
+  name            String
+  slug            String
+  description     String
+  basePrice       Decimal?
+  discount        Decimal?
+  thumbnail       String?
+  video           String?
+  brand           String?
+  sku             String?
+  status          ProductStatus
+  weightUnit      String?
+  dimensionUnit   String?
+  seoTitle        String?
+  seoDescription  String?
+  isFeatured      Boolean             @default(false)
+  sold            Int                 @default(0)
+  viewCount       Int                 @default(0)
+  rating          Float               @default(0)
+  publishedAt     DateTime?
+  deletedAt       DateTime?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  category        Category            @relation(fields: [categoryId], references: [id])
+  store           Store               @relation(fields: [storeId], references: [id])
+  colors          ProductColor[]      @relation("ProductColor")
+  images          ProductImage[]      @relation("ProductImage")
+  reviews         Review[]
+  wishlists       Wishlist[]
+  statistic       ProductStatistic?
+  recentlyViewed  RecentlyViewed[]
+
+  @@unique([storeId, slug])
+  @@index([storeId])
+  @@index([categoryId])
+  @@index([deletedAt])
 }
 
 model ProductColor {
@@ -102,12 +170,15 @@ model ProductVariant {
   id             String         @id @default(cuid())
   productColorId String
   size           String
+  isDefault      Boolean        @default(false)
+  image          String?
   weight         Decimal?
   length         Decimal?
   width          Decimal?
   height         Decimal?
   stock          Int
   price          Decimal
+  costPrice      Decimal?
   sku            String?
   barcode        String?
   cartItems      CartItem[]
@@ -126,6 +197,16 @@ model ProductImage {
   product   Product @relation("ProductImage", fields: [productId], references: [id])
 }
 
+model ProductStatistic {
+  id        String  @id @default(cuid())
+  productId String  @unique
+  views     Int     @default(0)
+  sold      Int     @default(0)
+  wishlist  Int     @default(0)
+  rating    Float   @default(0)
+  product   Product @relation(fields: [productId], references: [id])
+}
+
 model Address {
   id        String  @id @default(cuid())
   userId    String
@@ -137,13 +218,18 @@ model Address {
   detail    String
   isDefault Boolean @default(false)
   user      User    @relation(fields: [userId], references: [id])
+  orders    Order[]
+
+  @@index([userId])
 }
 
 model Cart {
-  id     String     @id @default(cuid())
-  userId String     @unique
-  user   User       @relation(fields: [userId], references: [id])
-  items  CartItem[]
+  id        String     @id @default(cuid())
+  userId    String     @unique
+  user      User       @relation(fields: [userId], references: [id])
+  items     CartItem[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
 
 model CartItem {
@@ -168,6 +254,8 @@ model Wishlist {
 model Order {
   id              String        @id @default(cuid())
   userId          String
+  addressId       String?
+  couponId        String?
   subtotal        Decimal
   discount        Decimal
   shippingFee     Decimal
@@ -177,19 +265,34 @@ model Order {
   platformReceive Decimal
   status          OrderStatus
   paymentMethod   PaymentMethod
+  note            String?
+  paidAt          DateTime?
+  completedAt     DateTime?
+  cancelledAt     DateTime?
+  cancelReason    String?
   createdAt       DateTime      @default(now())
   complaint       Complaint?    @relation("OrderComplaint")
   user            User          @relation(fields: [userId], references: [id])
+  address         Address?      @relation(fields: [addressId], references: [id])
+  coupon          Coupon?       @relation(fields: [couponId], references: [id])
   items           OrderItem[]
   payment         Payment?
   refund          Refund?
   shipment        Shipment?
+
+  @@index([userId])
+  @@index([status])
+  @@index([addressId])
+  @@index([couponId])
 }
 
 model OrderItem {
   id               String         @id @default(cuid())
   orderId          String
   productVariantId String
+  productName      String
+  productImage     String?
+  variantName      String?
   quantity         Int
   price            Decimal
   order            Order          @relation(fields: [orderId], references: [id])
@@ -204,6 +307,9 @@ model Payment {
   amount        Decimal
   qrCode        String?
   status        PaymentStatus
+  paidAt        DateTime?
+  callbackData  Json?
+  failureReason String?
   order         Order           @relation(fields: [orderId], references: [id])
 }
 
@@ -217,8 +323,6 @@ model PaymentSetting {
   vnpayTmnCode    String?
   vnpayHashSecret String?
   stripeSecretKey String?
-  paypalClientId  String?
-  paypalSecretKey String?
   isMomoEnabled   Boolean  @default(false)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -235,29 +339,44 @@ model Refund {
 }
 
 model Complaint {
-  id          String          @id @default(cuid())
-  orderId     String          @unique
+  id          String                @id @default(cuid())
+  orderId     String                @unique
   userId      String
   ownerReply  String?
   adminReply  String?
   title       String
   description String
   status      ComplaintStatus
-  order       Order           @relation("OrderComplaint", fields: [orderId], references: [id])
-  user        User            @relation(fields: [userId], references: [id])
+  order       Order                 @relation("OrderComplaint", fields: [orderId], references: [id])
+  user        User                  @relation(fields: [userId], references: [id])
+  attachments ComplaintAttachment[]
+}
+
+model ComplaintAttachment {
+  id          String    @id @default(cuid())
+  complaintId String
+  url         String
+  type        String
+  complaint   Complaint @relation(fields: [complaintId], references: [id])
+
+  @@index([complaintId])
 }
 
 model Shipment {
-  id            String            @id @default(cuid())
-  orderId       String            @unique
-  driverName    String?
-  driverPhone   String?
-  latitude      Float?
-  longitude     Float?
-  estimatedTime String?
-  status        ShipmentStatus
-  order         Order             @relation(fields: [orderId], references: [id])
-  histories     ShipmentHistory[]
+  id                String            @id @default(cuid())
+  orderId           String            @unique
+  driverName        String?
+  driverPhone       String?
+  trackingNumber    String?
+  carrier           String?
+  latitude          Float?
+  longitude         Float?
+  estimatedTime     String?
+  estimatedDelivery DateTime?
+  deliveredAt       DateTime?
+  status            ShipmentStatus
+  order             Order             @relation(fields: [orderId], references: [id])
+  histories         ShipmentHistory[]
 }
 
 model Conversation {
@@ -277,7 +396,12 @@ model Message {
   senderId       String
   content        String
   type           MessageType
+  fileUrl        String?
   seen           Boolean      @default(false)
+  editedAt       DateTime?
+  replyToId      String?
+  replyTo        Message?     @relation("MessageReply", fields: [replyToId], references: [id])
+  replies        Message[]    @relation("MessageReply")
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
   deletedAt      DateTime?
@@ -290,8 +414,11 @@ model Notification {
   userId    String
   title     String
   content   String
+  image     String?
   type      NotificationType
   link      String?
+  action    String?
+  metadata  Json?
   isRead    Boolean          @default(false)
   createdAt DateTime         @default(now())
   updatedAt DateTime         @updatedAt
@@ -300,48 +427,89 @@ model Notification {
 
 model Coupon {
   id              String     @id @default(cuid())
-  code            String     @unique
+  storeId         String
+  store           Store      @relation(fields: [storeId], references: [id])
+  code            String
+  description     String?
   discount        Decimal
   minimumOrder    Decimal
   maximumDiscount Decimal?
+  maxUsagePerUser Int?
   quantity        Int
   startAt         DateTime
   expiredAt       DateTime
   isActive        Boolean    @default(true)
   usedCount       Int        @default(0)
   type            CouponType
+  createdBy       String
+  createdByUser   User       @relation("CouponCreatedBy", fields: [createdBy], references: [id])
+  orders          Order[]
+
+  @@unique([storeId, code])
+  @@index([storeId])
 }
 
 model CommissionSetting {
   id             String   @id @default(cuid())
   commissionRate Decimal
+  updatedBy      String
+  updatedByUser  User     @relation("CommissionUpdatedBy", fields: [updatedBy], references: [id])
   updatedAt      DateTime @updatedAt
+
+  @@index([updatedBy])
 }
 
 model AnalyticsDaily {
-  id       String   @id @default(cuid())
-  date     DateTime
-  revenue  Decimal
-  orders   Int
-  visitors Int
+  id              String   @id @default(cuid())
+  storeId         String
+  store           Store    @relation(fields: [storeId], references: [id])
+  date            DateTime
+  revenue         Decimal
+  profit          Decimal
+  orders          Int
+  cancelled       Int      @default(0)
+  refund          Decimal  @default(0)
+  visitors        Int
+  newCustomer     Int      @default(0)
+  conversionRate  Float    @default(0)
+
+  @@unique([storeId, date])
+  @@index([storeId])
 }
 
 model AnalyticsMonthly {
-  id       String   @id @default(cuid())
-  month    DateTime
-  revenue  Decimal
-  orders   Int
-  visitors Int
+  id              String   @id @default(cuid())
+  storeId         String
+  store           Store    @relation(fields: [storeId], references: [id])
+  month           DateTime
+  revenue         Decimal
+  profit          Decimal
+  orders          Int
+  cancelled       Int      @default(0)
+  refund          Decimal  @default(0)
+  visitors        Int
+  newCustomer     Int      @default(0)
+  conversionRate  Float    @default(0)
+
+  @@unique([storeId, month])
+  @@index([storeId])
 }
 
 model InventoryLog {
   id               String         @id @default(cuid())
   productVariantId String
   quantity         Int
+  beforeStock      Int
+  afterStock       Int
   type             InventoryType
   note             String?
+  createdBy        String?
+  createdByUser    User?          @relation("InventoryLogCreatedBy", fields: [createdBy], references: [id])
   createdAt        DateTime       @default(now())
   productVariant   ProductVariant @relation(fields: [productVariantId], references: [id])
+
+  @@index([productVariantId])
+  @@index([createdBy])
 }
 
 model Review {
@@ -350,12 +518,17 @@ model Review {
   userId    String
   rating    Int
   comment   String?
+  images    String[]
+  videos    String[]
+  reply     String?
+  replyAt   DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   product   Product  @relation(fields: [productId], references: [id])
   user      User     @relation(fields: [userId], references: [id])
 
   @@unique([userId, productId])
+  @@index([productId])
 }
 
 model ShipmentHistory {
@@ -369,6 +542,105 @@ model ShipmentHistory {
   shipment    Shipment       @relation(fields: [shipmentId], references: [id])
 }
 
+model Visitor {
+  id        String   @id @default(cuid())
+  storeId   String
+  store     Store    @relation(fields: [storeId], references: [id])
+  ip        String?
+  country   String?
+  device    String?
+  createdAt DateTime @default(now())
+
+  @@index([storeId])
+}
+
+model Banner {
+  id        String   @id @default(cuid())
+  title     String
+  image     String
+  link      String?
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model OtpLog {
+  id        String   @id @default(cuid())
+  email     String
+  type      String
+  expiredAt DateTime
+  verified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([email])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  action    String
+  entity    String
+  entityId  String
+  oldValue  Json?
+  newValue  Json?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([entity, entityId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  userId       String
+  device       String?
+  browser      String?
+  ip           String?
+  refreshToken String
+  expiredAt    DateTime
+  createdAt    DateTime @default(now())
+  user         User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model StoreFollower {
+  id        String   @id @default(cuid())
+  storeId   String
+  userId    String
+  store     Store    @relation(fields: [storeId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([storeId, userId])
+  @@index([storeId])
+  @@index([userId])
+}
+
+model SearchHistory {
+  id        String   @id @default(cuid())
+  userId    String
+  keyword   String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model RecentlyViewed {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, productId])
+  @@index([userId])
+}
+
 enum CouponType {
   PERCENT
   FIXED
@@ -379,33 +651,15 @@ enum NotificationType {
   CHAT
   PAYMENT
   REFUND
+  COMPLAINT
+  REVIEW
+  SHIPMENT
 }
 
 enum InventoryType {
   INCREASE
   DECREASE
   RETURN
-}
-
-enum StoreStatus {
-  ACTIVE
-  PENDING
-  BLOCKED
-}
-
-enum ProductStatus {
-  ACTIVE
-  DRAFT
-  OUT_OF_STOCK
-  HIDDEN
-}
-
-enum OrderStatus {
-  PENDING
-  CONFIRMED
-  PROCESSING
-  SHIPPING
-  DELIVERED
 }
 
 enum StoreStatus {
@@ -477,4 +731,6 @@ enum MessageType {
   TEXT
   IMAGE
   FILE
+  EMOJI
 }
+

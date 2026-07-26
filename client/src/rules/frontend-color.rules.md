@@ -1,108 +1,157 @@
 # Smart Commerce Frontend Color Rules
 
-Version: 1.0
+Version: 2.0
 
 ---
 
-# Design Style
-
-Modern
+# Design Philosophy
 
 Minimal
 
-Professional
+Premium
 
-Shopping Focused
+Warm Neutral
 
-Clean
+Scandinavian
 
-Responsive
+Editorial
 
-Never use more than one primary color.
+Timeless
+
+Large White Space
+
+Shopping First
+
+Never use more than ONE accent color.
 
 ---
 
-# Primary Colors
+# Brand Colors
 
 Primary
-
-#FF6B00
+#16211C
 
 Primary Hover
-
-#E65C00
+#1F5D4E
 
 Primary Light
+#EEF4F1
 
-#FFF3E8
-
----
-
-# Secondary
-
-#2563EB
-
-Secondary Hover
-
-#1D4ED8
+Primary Soft
+#F5F8F6
 
 ---
 
-# Success
+# Accent Color
 
-#16A34A
+Accent
+#E8A33D
 
-Warning
+Accent Hover
+#DB9328
 
-#F59E0B
+Accent Light
+#FFF6E8
 
-Danger
+Accent Dark
+#9C6614
 
-#DC2626
+Accent is ONLY used for:
 
-Info
+• CTA
+• Price Tag
+• Discount
+• Badge
+• Active State
 
-#0284C7
+Never use Accent as page background.
 
 ---
 
-# Neutral
+# Background
 
-White
+Page
+#FAF9F6
 
+Section
 #FFFFFF
 
-Gray 50
+Card
+#FFFFFF
 
-#F9FAFB
+Hover
+#F6F5F2
 
-Gray 100
+Dark Section
+#16211C
 
-#F3F4F6
+---
 
-Gray 200
+# Surface
 
-#E5E7EB
+Primary Surface
+White
 
-Gray 300
+Secondary Surface
+#F5F5F2
 
-#D1D5DB
+Elevated
+White
 
-Gray 400
+Glass
+rgba(250,249,246,0.8)
 
-#9CA3AF
+---
 
-Gray 500
+# Typography
 
-#6B7280
+Heading
 
-Gray 700
+#16211C
 
-#374151
+Body
 
-Gray 900
+#4A544D
 
-#111827
+Secondary
+
+#6E7B73
+
+Muted
+
+#8A8577
+
+Placeholder
+
+#A8A296
+
+Disabled
+
+#B9C4BC
+
+Inverse
+
+#FAF9F6
+
+---
+
+# Border
+
+Light
+
+#E4DFD3
+
+Default
+
+#DAD5C8
+
+Strong
+
+#CFC8B7
+
+Focus
+
+#1F5D4E
 
 ---
 
@@ -110,15 +159,19 @@ Gray 900
 
 Current Price
 
-Orange
+#16211C
 
-Old Price
+Original Price
 
-Gray
+#8A8577
 
 Discount
 
-Red
+#E8A33D
+
+Sale Badge
+
+#E8A33D
 
 ---
 
@@ -126,7 +179,35 @@ Red
 
 Star
 
-#FBBF24
+#E8A33D
+
+Empty Star
+
+#DAD5C8
+
+---
+
+# Status
+
+Success
+
+#2E7D32
+
+Warning
+
+#E8A33D
+
+Danger
+
+#C24A3D
+
+Info
+
+#2563EB
+
+Out Of Stock
+
+#8A8577
 
 ---
 
@@ -134,39 +215,108 @@ Star
 
 Primary
 
-Orange
+Background
+#16211C
 
-Secondary
+Hover
+#1F5D4E
 
-White
+Text
+#FAF9F6
 
-Danger
-
-Red
-
-Success
-
-Green
-
-Outline
-
-White + Orange Border
+Radius
+6px
 
 ---
 
-# Status
+Secondary
 
-Available
+Background
+White
 
-Green
+Border
+#DAD5C8
 
-Low Stock
+Text
+#16211C
 
-Orange
+Hover
+#F6F5F2
 
-Out Of Stock
+---
 
-Gray
+Accent
+
+Background
+#E8A33D
+
+Hover
+#DB9328
+
+Text
+#4A2F0A
+
+---
+
+Ghost
+
+Transparent
+
+Hover
+#F6F5F2
+
+Text
+#16211C
+
+---
+
+# Inputs
+
+Background
+
+Transparent
+
+Border
+
+#DAD5C8
+
+Focus
+
+#1F5D4E
+
+Text
+
+#16211C
+
+Placeholder
+
+#A8A296
+
+Error
+
+#C24A3D
+
+Radius
+
+0px
+
+Use Bottom Border Only.
+
+---
+
+# Links
+
+Default
+
+#16211C
+
+Hover
+
+#1F5D4E
+
+Visited
+
+#4A544D
 
 ---
 
@@ -174,17 +324,35 @@ Gray
 
 Background
 
-Orange Light
+#FFF6E8
 
 Border
 
-Orange
+#E8A33D
+
+Text
+
+#9C6614
 
 ---
 
-# Border
+# Badges
 
-Gray200
+New
+
+#1F5D4E
+
+Sale
+
+#E8A33D
+
+Hot
+
+#C24A3D
+
+Limited
+
+#16211C
 
 ---
 
@@ -198,9 +366,15 @@ Hover
 
 shadow-lg
 
+Dropdown
+
+shadow-lg
+
 Modal
 
 shadow-xl
+
+Never use heavy shadows.
 
 ---
 
@@ -208,55 +382,73 @@ shadow-xl
 
 Card
 
-12px
-
-Input
-
-10px
+8px
 
 Button
 
-10px
+6px
+
+Image
+
+6px
 
 Modal
 
-16px
+12px
+
+Badge
+
+999px
 
 ---
 
-# Typography
+# Typography Style
+
+Display
+
+Fraunces
 
 Heading
 
-Gray900
+Fraunces
 
 Body
 
-Gray700
+Inter
 
-Description
+Label
 
-Gray500
-
-Link
-
-Blue
+IBM Plex Mono
 
 Price
 
-Orange
+IBM Plex Mono
+
+Never use more than three font families.
 
 ---
 
-# Animation
+# Motion
+
+Transition
 
 150ms
 
+Hover
+
 200ms
+
+Modal
 
 250ms
 
-Use Framer Motion.
+Framer Motion Preferred.
+
+Ease
+
+ease-out
+
+Never use bounce animations.
 
 ---
 
@@ -264,6 +456,80 @@ Use Framer Motion.
 
 WCAG AA
 
-Visible Focus
-
 Keyboard Navigation
+
+Visible Focus Ring
+
+Minimum Contrast 4.5
+
+Clickable Area ≥44px
+
+---
+
+# Image Style
+
+Warm
+
+Soft Contrast
+
+Natural Light
+
+Minimal
+
+Luxury Retail
+
+No oversaturated colors.
+
+---
+
+# Product Card
+
+White Card
+
+Large Product Image
+
+Small Mono Category
+
+Medium Product Name
+
+Price Tag Floating
+
+Subtle Hover Lift
+
+---
+
+# Navigation
+
+Sticky
+
+Transparent Blur
+
+Thin Border
+
+Minimal Icons
+
+No Heavy Background
+
+---
+
+# General Rules
+
+Use warm neutrals instead of cool grays.
+
+Avoid saturated colors except Accent.
+
+Every page should feel calm.
+
+Prefer white space over separators.
+
+Do not use more than:
+
+1 Primary
+
+1 Accent
+
+1 Danger
+
+1 Success
+
+Keep visual hierarchy through spacing instead of color.
