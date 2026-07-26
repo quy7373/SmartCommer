@@ -1,5 +1,6 @@
 import React from 'react';
-import { ArrowRight, ShoppingBag, Search, Lamp, Shirt, Coffee, Headphones, Watch, Sofa } from 'lucide-react';
+import { ArrowRight, Lamp, Shirt, Coffee, Headphones, Watch, Sofa } from 'lucide-react';
+import { Header } from '../components/layout/Header';
 
 const TagIcon = ({ className = '' }: { className?: string }) => (
     <svg viewBox="0 0 24 24" fill="none" className={className}>
@@ -53,29 +54,7 @@ const LandingPage: React.FC = () => {
                 .no-scrollbar { scrollbar-width: none; }
             `}</style>
 
-            {/* Nav */}
-            <header className="border-b border-[#E4DFD3] sticky top-0 bg-[#FAF9F6]/95 backdrop-blur z-20">
-                <div className="max-w-7xl mx-auto px-6 h-[76px] flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <TagIcon className="w-6 h-6 text-[#1F5D4E]" />
-                        <span className="sc-display text-xl font-semibold">Smart Commerce</span>
-                    </div>
-                    <nav className="hidden md:flex items-center gap-8 text-[14px] font-medium text-[#4A544D]">
-                        <a href="#" className="hover:text-[#16211C]">Shop</a>
-                        <a href="#categories" className="hover:text-[#16211C]">Categories</a>
-                        <a href="#" className="hover:text-[#16211C]">About</a>
-                    </nav>
-                    <div className="flex items-center gap-5">
-                        <Search size={19} className="text-[#4A544D] hidden sm:block cursor-pointer hover:text-[#16211C]" />
-                        <div className="relative">
-                            <ShoppingBag size={19} className="text-[#4A544D] cursor-pointer hover:text-[#16211C]" />
-                            <span className="absolute -top-2 -right-2 bg-[#E8A33D] text-[#4A2F0A] text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">3</span>
-                        </div>
-                        <a href="/login" className="hidden sm:block text-[14px] font-medium text-[#4A544D] hover:text-[#16211C]">Sign in</a>
-                        <a href="/register" className="text-[14px] font-medium bg-[#16211C] text-[#FAF9F6] px-4 py-2 rounded-sm hover:bg-[#1F5D4E] transition-colors">Sign up</a>
-                    </div>
-                </div>
-            </header>
+            <Header />
 
             {/* Hero */}
             <section className="max-w-7xl mx-auto px-6 pt-16 pb-20 grid md:grid-cols-2 gap-12 items-center">

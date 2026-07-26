@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { LayoutGrid, Heart, ShoppingCart, Bell, User } from 'lucide-react';
 
 export const Header = () => {
     const { user, logout } = useAuth() || {};
@@ -12,13 +13,14 @@ export const Header = () => {
                     <input type="text" placeholder="Search..." className="w-full bg-transparent border-b border-[#DAD5C8] focus:border-[#1F5D4E] outline-none py-1 text-[#16211C] placeholder-[#A8A296]" />
                 </div>
                 <nav className="flex gap-6 text-[#4A544D] items-center">
-                    <span className="hover:text-[#16211C] cursor-pointer">Categories</span>
-                    <span className="hover:text-[#16211C] cursor-pointer">Wishlist</span>
-                    <span className="hover:text-[#16211C] cursor-pointer">Cart</span>
+                    <a href="/categories" className="hover:text-[#16211C]"><LayoutGrid size={20} /></a>
+                    <a href="/wishlist" className="hover:text-[#16211C]"><Heart size={20} /></a>
+                    <a href="/cart" className="hover:text-[#16211C]"><ShoppingCart size={20} /></a>
+                    <a href="/notifications" className="hover:text-[#16211C]"><Bell size={20} /></a>
                     {user ? (
                         <div className="relative">
                             <div
-                                className="flex items-center gap-2 cursor-pointer hover:text-[#16211C]"
+                                className="flex items-center gap-1 cursor-pointer hover:text-[#16211C]"
                                 onClick={() => setIsOpen(!isOpen)}
                             >
                                 <div className="w-6 h-6 rounded-full bg-[#E4DFD3] flex items-center justify-center text-xs text-[#16211C]">

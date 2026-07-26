@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff, ArrowRight } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { login as loginApi } from '../../api/auth';
 import { useAuth } from '../../context/AuthContext';
 
@@ -152,7 +152,7 @@ export const LoginForm = () => {
                                     <input type="checkbox" className="accent-[#1F5D4E] w-3.5 h-3.5" />
                                     Remember me
                                 </label>
-                                <a href="#" className="text-[#1F5D4E] font-medium hover:underline">Forgot password?</a>
+                                <Link to="/forgot-password" title="Forgot password?" className="text-[#1F5D4E] font-medium hover:underline">Forgot password?</Link>
                             </div>
 
                             <button

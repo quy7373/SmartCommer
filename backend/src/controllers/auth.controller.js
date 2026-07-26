@@ -54,3 +54,15 @@ export const facebookCallback = asyncHandler(async (req, res) => {
     res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
     res.redirect(`${process.env.CLIENT_URL}/auth/callback?token=${accessToken}`);
 });
+
+export const forgotPassword = asyncHandler(async (req, res) => {
+    const { email } = req.body;
+    await authService.forgotPassword(email);
+    res.status(200).json({ success: true, message: 'Password reset email sent' });
+});
+
+export const resetPassword = asyncHandler(async (req, res) => {
+    const { token, password } = req.body;
+    await authService.resetPassword(token, password);
+    res.status(200).json({ success: true, message: 'Password reset successful' });
+});

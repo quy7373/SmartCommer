@@ -1,37 +1,54 @@
+import React from 'react';
 import { Header } from "../components/layout/Header";
 import { Footer } from "../components/layout/Footer";
+import { ArrowRight, Lamp, Shirt, Coffee, Headphones, Watch, Sofa } from 'lucide-react';
+
+const categories = [
+    { name: 'Lighting', icon: Lamp },
+    { name: 'Apparel', icon: Shirt },
+    { name: 'Kitchen', icon: Coffee },
+    { name: 'Audio', icon: Headphones },
+    { name: 'Watches', icon: Watch },
+    { name: 'Furniture', icon: Sofa },
+];
+
+const products = [
+    { name: 'Ash Table Lamp', category: 'Lighting', price: '68.00', tint: 'from-[#E8DCC8] to-[#D9C4A0]' },
+    { name: 'Everyday Wool Coat', category: 'Apparel', price: '214.00', tint: 'from-[#DCE3DA] to-[#B7C6B4]' },
+    { name: 'Pour-Over Kit', category: 'Kitchen', price: '46.00', tint: 'from-[#E9D9CE] to-[#D3AF95]' },
+    { name: 'Field Headphones', category: 'Audio', price: '129.00', tint: 'from-[#DDE0DC] to-[#B9BFB4]' },
+];
 
 export const HomePage = () => (
-    <div className="min-h-screen flex flex-col bg-[#FAF9F6]">
+    <div className="min-h-screen bg-[#FAF9F6] text-[#16211C]">
         <Header />
-        <main className="flex-1 container mx-auto px-4 py-12">
-            <section className="h-[500px] bg-[#F5F8F6] mb-20 flex flex-col items-center justify-center text-[#16211C] rounded-lg">
-                <h1 className="text-6xl font-serif mb-6">Premium Collection</h1>
-                <button className="bg-[#E8A33D] text-[#4A2F0A] px-8 py-3 rounded-[6px] hover:bg-[#DB9328] transition-colors font-medium">Shop Now</button>
-            </section>
-
+        <main className="max-w-7xl mx-auto px-6 py-16">
             <section className="mb-20">
-                <h2 className="text-3xl font-serif text-[#16211C] mb-8">Categories</h2>
-                <div className="grid grid-cols-4 gap-6">
-                    {["Electronics", "Fashion", "Home Decor", "Accessories"].map((cat) => (
-                        <div key={cat} className="aspect-square bg-white border border-[#DAD5C8] rounded-[8px] p-6 flex items-end hover:shadow-sm transition-shadow duration-150">
-                            <h3 className="text-lg font-medium text-[#16211C]">{cat}</h3>
-                        </div>
+                <h2 className="text-3xl font-semibold mb-8">Welcome back</h2>
+                <div className="flex gap-4 overflow-x-auto pb-1">
+                    {categories.map(({ name, icon: Icon }) => (
+                        <button
+                            key={name}
+                            className="flex items-center gap-2.5 whitespace-nowrap px-5 py-3 rounded-full border border-[#DAD5C8] bg-white hover:border-[#1F5D4E] transition-colors text-[14px] font-medium"
+                        >
+                            <Icon size={16} />
+                            {name}
+                        </button>
                     ))}
                 </div>
             </section>
 
-            <section className="mb-20">
-                <h2 className="text-3xl font-serif text-[#16211C] mb-8">Flash Sale</h2>
-                <div className="grid grid-cols-4 gap-6">
-                    {[1, 2, 3, 4].map((i) => (
-                        <div key={i} className="bg-white border border-[#DAD5C8] rounded-[8px] p-4 hover:shadow-lg transition-shadow duration-200">
-                            <div className="h-48 bg-[#F5F5F2] rounded-[6px] mb-4"></div>
-                            <h3 className="text-[#16211C] mb-2">Product Name {i}</h3>
-                            <div className="flex items-center justify-between">
-                                <span className="text-[#16211C] font-mono">$99.00</span>
-                                <span className="bg-[#E8A33D] text-[#4A2F0A] text-xs px-2 py-1 rounded-[999px]">Sale</span>
-                            </div>
+            <section>
+                <div className="flex items-end justify-between mb-8">
+                    <h2 className="text-3xl font-semibold">Recommended for you</h2>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+                    {products.map((p) => (
+                        <div key={p.name} className="group cursor-pointer">
+                            <div className={`relative aspect-[4/5] rounded-md bg-gradient-to-br ${p.tint} overflow-hidden`}></div>
+                            <p className="text-[11px] uppercase text-[#8A8577] mt-3">{p.category}</p>
+                            <p className="text-[15px] font-medium mt-0.5">{p.name}</p>
+                            <p className="text-[14px] font-semibold mt-1">${p.price}</p>
                         </div>
                     ))}
                 </div>
