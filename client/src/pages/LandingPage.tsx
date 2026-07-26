@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowRight, Lamp, Shirt, Coffee, Headphones, Watch, Sofa } from 'lucide-react';
 import { Header } from '../components/layout/Header';
+import Footer from '../components/layout/Footer';
 
 const TagIcon = ({ className = '' }: { className?: string }) => (
     <svg viewBox="0 0 24 24" fill="none" className={className}>
@@ -134,46 +135,7 @@ const LandingPage: React.FC = () => {
                     ))}
                 </div>
             </section>
-
-            {/* Footer */}
-            <footer className="border-t border-[#E4DFD3] bg-[#16211C] text-[#B9C4BC]">
-                <div className="max-w-7xl mx-auto px-6 py-14 grid md:grid-cols-4 gap-10">
-                    <div>
-                        <div className="flex items-center gap-2 text-[#FAF9F6] mb-3">
-                            <TagIcon className="w-5 h-5 text-[#E8A33D]" />
-                            <span className="sc-display text-lg font-semibold">Smart Commerce</span>
-                        </div>
-                        <p className="text-[13px] leading-relaxed max-w-xs">A small shelf of things worth living with, shipped from a warehouse that smells faintly of cedar.</p>
-                    </div>
-                    <div>
-                        <p className="sc-mono text-[11px] tracking-wide uppercase text-[#6E7B73] mb-3">Shop</p>
-                        <ul className="space-y-2 text-[13px]">
-                            <li><a href="#" className="hover:text-[#FAF9F6]">Best sellers</a></li>
-                            <li><a href="#" className="hover:text-[#FAF9F6]">New arrivals</a></li>
-                            <li><a href="#" className="hover:text-[#FAF9F6]">Sale</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <p className="sc-mono text-[11px] tracking-wide uppercase text-[#6E7B73] mb-3">Company</p>
-                        <ul className="space-y-2 text-[13px]">
-                            <li><a href="#" className="hover:text-[#FAF9F6]">About</a></li>
-                            <li><a href="#" className="hover:text-[#FAF9F6]">Careers</a></li>
-                            <li><a href="#" className="hover:text-[#FAF9F6]">Contact</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <p className="sc-mono text-[11px] tracking-wide uppercase text-[#6E7B73] mb-3">Support</p>
-                        <ul className="space-y-2 text-[13px]">
-                            <li><a href="#" className="hover:text-[#FAF9F6]">Shipping</a></li>
-                            <li><a href="#" className="hover:text-[#FAF9F6]">Returns</a></li>
-                            <li><a href="#" className="hover:text-[#FAF9F6]">FAQ</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="border-t border-[#2A362F] px-6 py-5 text-center sc-mono text-[11px] text-[#6E7B73]">
-                    © 2026 Smart Commerce Co. All rights reserved.
-                </div>
-            </footer>
+            <Footer />
         </div>
     );
 };

@@ -44,9 +44,17 @@ export const LoginForm = () => {
         }
         try {
             const response = await loginApi(data);
-            login(response.data.user, response.data.accessToken);
+            const user = response.data.user;
+            login(user, response.data.accessToken);
             toast.success('Logged in successfully!');
-            navigate('/');
+            const role = user.role.toLowerCase();
+            if (role === 'admin') {
+                navigate('/admin');
+            } else if (role === 'owner') {
+                navigate('/owner');
+            } else {
+                navigate('/');
+            }
         } catch (error) {
             toast.error('Login failed. Please check your credentials.');
             console.error('Login failed:', error);
