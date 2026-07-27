@@ -8,7 +8,26 @@ export const createProduct = asyncHandler(async (req, res) => {
 });
 
 export const getAllProducts = asyncHandler(async (req, res) => {
-    const products = await productService.getAllProducts();
+    if (req.query.categoryId) {
+        console.log('categoryId =', req.query.categoryId);
+    }
+    const products = await productService.getAllProducts(req.query.categoryId);
+    res.status(200).json({ success: true, data: products });
+});
+
+export const getBestSellerProducts = asyncHandler(async (req, res) => {
+    const products = await productService.getBestSellerProducts();
+    res.status(200).json({ success: true, data: products });
+});
+
+export const getNewestProducts = asyncHandler(async (req, res) => {
+    const products = await productService.getNewestProducts();
+    res.status(200).json({ success: true, data: products });
+});
+
+export const getRecommendedProducts = asyncHandler(async (req, res) => {
+    const userId = req.user ? req.user.id : null;
+    const products = await productService.getRecommendedProducts(userId);
     res.status(200).json({ success: true, data: products });
 });
 

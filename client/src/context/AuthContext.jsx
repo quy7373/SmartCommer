@@ -5,6 +5,7 @@ const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -14,10 +15,14 @@ export const AuthProvider = ({ children }) => {
             } catch (error) {
                 setUser(null);
                 localStorage.removeItem('user');
+            } finally {
+                setLoading(false);
             }
         };
         if (localStorage.getItem('user')) {
             fetchUser();
+        } else {
+            setLoading(false);
         }
     }, []);
 
@@ -39,7 +44,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
+        <AuthContext.Provider value={{ user, login, logout, loading }}>
             {children}
         </AuthContext.Provider>
     );

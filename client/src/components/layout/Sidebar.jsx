@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import { getCategories } from '../../api/categories';
 
 const Sidebar = () => {
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
-        fetch('/api/categories')
-            .then(res => res.json())
-            .then(data => setCategories(data))
-            .catch(err => console.error('Error fetching categories:', err));
+        const fetchCategories = async () => {
+            try {
+                const data = await getCategories();
+                setCategories(data);
+            } catch (err) {
+                console.error('Error fetching categories:', err);
+            }
+        };
+        fetchCategories();
     }, []);
 
     const renderCategory = (category) => (

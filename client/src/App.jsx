@@ -3,6 +3,8 @@ import { Routes, Route } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import Sidebar from './components/layout/Sidebar';
 import { HomePage } from './pages/User/HomePage';
+import { ProfilePage } from './pages/User/ProfilePage';
+import { SearchPage } from './pages/User/SearchPage';
 import { ProductListPage } from './pages/User/ProductListPage';
 import { ProductDetailPage } from './pages/User/ProductDetailPage';
 import LandingPage from './pages/LandingPage';
@@ -31,7 +33,7 @@ import './index.css';
 
 function App() {
   const { user } = useAuth() || {};
-  const showSidebar = ['/', '/products'].some(path => window.location.pathname === path) || window.location.pathname.startsWith('/products/');
+  const showSidebar = ['/products'].some(path => window.location.pathname === path) || window.location.pathname.startsWith('/products/');
 
   return (
     <div className="flex">
@@ -40,6 +42,8 @@ function App() {
         <main className="flex-1">
           <Routes>
             <Route path="/" element={user ? <ProtectedRoute allowedRoles={['USER']}><HomePage /></ProtectedRoute> : <LandingPage />} />
+            <Route path="/profile" element={<ProtectedRoute allowedRoles={['USER']}><ProfilePage /></ProtectedRoute>} />
+            <Route path="/search" element={<ProtectedRoute allowedRoles={['USER']}><SearchPage /></ProtectedRoute>} />
             <Route path="/products" element={<ProtectedRoute allowedRoles={['USER']}><ProductListPage /></ProtectedRoute>} />
             <Route path="/products/:id" element={<ProtectedRoute allowedRoles={['USER']}><ProductDetailPage /></ProtectedRoute>} />
             <Route path="/login" element={<LoginPage />} />
