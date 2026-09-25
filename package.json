@@ -3,10 +3,16 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "npm --prefix backend run test && npm --prefix client run test",
-    "test:unit": "npm --prefix backend run test:unit && npm --prefix client run test",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit:vitest": "npm --prefix backend run test:unit && npm --prefix client run test",
+    "test:unit:jest": "npm --prefix backend run test:jest",
+    "test:unit": "npm run test:unit:vitest && npm run test:unit:jest",
     "test:integration": "npm --prefix backend run test:integration",
+    "test:integration:supertest": "npm --prefix backend run test:integration",
+    "test:system:playwright": "npm --prefix client run test:e2e",
+    "test:system:cypress": "npm --prefix client run test:cypress",
+    "test:system": "npm run test:system:playwright && npm run test:system:cypress",
     "test:coverage": "npm --prefix backend run test:coverage && npm --prefix client run test:coverage",
-    "test:e2e": "npm --prefix client run test:e2e"
+    "test:all": "npm run test:unit && npm run test:integration && npm run test:system"
   }
 }
