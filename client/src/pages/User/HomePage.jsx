@@ -5,12 +5,10 @@ import { getCategories } from "../../api/categories";
 import { Header } from "../../components/layout/Header";
 import Footer from "../../components/layout/Footer";
 import { ProductCard } from "../../components/common/ProductCard";
-import { useAuth } from "../../context/AuthContext";
 import * as LucideIcons from 'lucide-react';
 
 export const HomePage = () => {
     const navigate = useNavigate();
-    const { user } = useAuth();
     const token = localStorage.getItem('accessToken');
     const [flashSales, setFlashSales] = useState([]);
     const [bestSellers, setBestSellers] = useState([]);

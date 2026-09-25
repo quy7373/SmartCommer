@@ -34,6 +34,23 @@ export const ProductListPage = () => {
         <div className="min-h-screen bg-[#FAF9F6] text-[#16211C]">
             <Header />
             <main className="max-w-7xl mx-auto px-6 py-16">
+                {categories.length > 0 && (
+                    <div className="flex gap-3 overflow-x-auto pb-4 mb-8">
+                        {categories.map((cat) => (
+                            <button
+                                key={cat.id}
+                                onClick={() => setSelectedCategoryId(cat.id)}
+                                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                                    selectedCategoryId === cat.id
+                                        ? 'bg-[#1F5D4E] text-white'
+                                        : 'bg-white border border-[#DAD5C8] text-[#16211C] hover:border-[#1F5D4E]'
+                                }`}
+                            >
+                                {cat.name}
+                            </button>
+                        ))}
+                    </div>
+                )}
                 {/* Products */}
                 <section className="flex-1">
                     <h2 className="text-3xl font-semibold mb-8">Products</h2>

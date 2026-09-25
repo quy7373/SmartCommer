@@ -29,6 +29,7 @@ import OwnerProducts from './pages/owner/OwnerProducts';
 import OwnerCategories from './pages/owner/OwnerCategories';
 import OwnerCustomers from './pages/owner/OwnerCustomers';
 import OwnerAnalytics from './pages/owner/OwnerAnalytics';
+import BenchmarkPage from './pages/BenchmarkPage';
 import './index.css';
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
         <main className="flex-1">
           <Routes>
             <Route path="/" element={user ? <ProtectedRoute allowedRoles={['USER']}><HomePage /></ProtectedRoute> : <LandingPage />} />
+            <Route path="/benchmark" element={<BenchmarkPage />} />
             <Route path="/profile" element={<ProtectedRoute allowedRoles={['USER']}><ProfilePage /></ProtectedRoute>} />
             <Route path="/search" element={<ProtectedRoute allowedRoles={['USER']}><SearchPage /></ProtectedRoute>} />
             <Route path="/products" element={<ProtectedRoute allowedRoles={['USER']}><ProductListPage /></ProtectedRoute>} />

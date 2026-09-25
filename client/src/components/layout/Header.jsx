@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { LayoutGrid, Heart, ShoppingCart, Bell, User } from 'lucide-react';
+import { LayoutGrid, Heart, ShoppingCart, Bell, Zap } from 'lucide-react';
 
 export const Header = () => {
     const { user, logout } = useAuth() || {};
@@ -13,6 +13,10 @@ export const Header = () => {
                     <input type="text" placeholder="Search..." className="w-full bg-transparent border-b border-[#DAD5C8] focus:border-[#1F5D4E] outline-none py-1 text-[#16211C] placeholder-[#A8A296]" />
                 </div>
                 <nav className="flex gap-6 text-[#4A544D] items-center">
+                    <a href="/benchmark" title="Benchmark Suite" className="hover:text-emerald-600 transition flex items-center gap-1 text-emerald-700 font-medium text-xs bg-emerald-50 px-2 py-1 rounded border border-emerald-200">
+                        <Zap size={16} className="text-emerald-600" />
+                        <span>Benchmark</span>
+                    </a>
                     <a href="/categories" className="hover:text-[#16211C]"><LayoutGrid size={20} /></a>
                     <a href="/wishlist" className="hover:text-[#16211C]"><Heart size={20} /></a>
                     <a href="/cart" className="hover:text-[#16211C]"><ShoppingCart size={20} /></a>
